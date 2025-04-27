@@ -1,8 +1,8 @@
 ---
 - name: Run butane
   butane:
-    input_path: "{{ input_path }}"
-    input: "{{ input }}"
+    input_path: "{{ input_path | default(omit) }}"
+    input: "{{ input | default(omit) }}"
     bin: "{{ bin }}"
     check: "{{ check }}"
     files_dir: "{{ files_dir }}"

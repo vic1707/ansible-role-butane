@@ -135,14 +135,20 @@ def main():
 				"required": False,
 			},
 		},
-		mutually_exclusive=[
-			["input_path", "input"],
-		],
+		# Done manually, receiving null strill triggers the error
+		# mutually_exclusive=[
+		# 	["input_path", "input"],
+		# ],
 		required_one_of=[
 			["input_path", "input"],
 		],
 		supports_check_mode=False,
 	)
+
+	if module.params["input"] and module.params["input_path"]:
+		return module.fail_json(
+			msg="parameters are mutually exclusive: input_path|input"
+		)
 
 	## Canonicalize butane binary path
 	if not os.path.isfile(module.params["bin"]):
