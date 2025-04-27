@@ -1,4 +1,4 @@
-name: Lint
+name: Lint & Format
 
 on:
   push:
@@ -15,6 +15,18 @@ on:
 permissions: {}
 
 jobs:
+  formatters:
+    name: formatters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@v2.2.1
+
+      - name: Ruff
+        run: ruff format --check
+
   linters:
     name: linters
     runs-on: ubuntu-latest
@@ -37,3 +49,6 @@ jobs:
 
       - name: Ansible-lint
         run: ansible-lint
+
+      - name: Ruff
+        run: ruff check
