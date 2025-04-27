@@ -14,6 +14,7 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 
     _⚠️ Note:_ While this role officially targets Ansible 9.13.0+, it has been tested to work starting from Ansible 6.0.
     Older versions are unsupported and may fail depending on your environment.
+
 -   `butane` CLI installed on the target system (or available at a specified path)
 
 ---
@@ -39,26 +40,36 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 **Example using a file:**
 
 ```yaml
-- name: Convert Butane file
-	vic1707.butane:
-      input_path: /path/to/config.bu
-      output: /path/to/config.ign
+- name: Test Butane Module
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+      - role: vic1707.butane
+        vars:
+			input_path: /path/to/config.bu
+			output: /path/to/config.ign
 ```
 
 **Example using inline input:**
 
 ```yml
-- name: Convert raw Butane input
-  vic1707.butane:
-      output: /path/to/config.ign ## Can be omitted
-      input: |
-          variant: fcos
-          version: 1.4.0
-          storage:
-            files:
-              - path: /etc/example
-                contents:
-                  inline: Hello World
+- name: Test Butane Module
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+      - role: vic1707.butane
+        vars:
+			output: /path/to/config.ign ## Can be omitted
+			input: |
+				variant: fcos
+				version: 1.4.0
+				storage:
+				files:
+					- path: /etc/example
+					contents:
+						inline: Hello World
 ```
 
 ---
