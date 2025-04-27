@@ -14,7 +14,7 @@
 ---
 input_path: null # File path to butane file. Incompatible with <input_raw>.
 input_raw: null # Inline raw butane file. Incompatible with <input_path>.
-bin: "butane" # Assuming `butane` is in `$PATH`
+bin: "butane" # Path to the `butane` binary. Defaults to looking it up as a local file then in `$PATH`.
 check: false # Default to running the butane conversion
 files_dir: null # Default to butane's file path, None if using stdin
 output: null # Default to stdout
