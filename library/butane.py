@@ -3,6 +3,89 @@ import subprocess
 import os
 
 
+DOCUMENTATION = r"""
+---
+module: butane
+short_description: Wrapper around the CoreOS Butane CLI tool
+description:
+  - This module allows running Butane to generate Ignition configs from Butane files.
+  - Supports passing input from a file or inline content.
+options:
+  input_path:
+    description:
+      - Path to the Butane input file.
+    type: str
+  input:
+    description:
+      - Raw Butane configuration content to pass via stdin.
+    type: str
+  bin:
+    description:
+      - Path to the Butane binary or binary name if in PATH.
+    type: str
+    default: butane
+  check:
+    description:
+      - Validate config without generating output.
+    type: bool
+    default: false
+  files_dir:
+    description:
+      - Directory containing files to embed.
+    type: str
+  output:
+    description:
+      - Output file path to write the result.
+    type: str
+  pretty:
+    description:
+      - Output formatted JSON.
+    type: bool
+    default: true
+  raw:
+    description:
+      - Output raw Ignition without MachineConfig wrapping.
+    type: bool
+    default: false
+  strict:
+    description:
+      - Fail on warnings.
+    type: bool
+    default: true
+author:
+  - vic1707
+"""
+
+EXAMPLES = r"""
+- name: Generate ignition config from Butane input file
+  butane:
+    input_path: "./example.bu"
+    output: "./example.ign"
+
+- name: Validate Butane config from inline content
+  butane:
+    input: |
+      variant: fcos
+      version: 1.4.0
+      systemd:
+        units:
+          - name: example.service
+            enabled: true
+    check: true
+"""
+
+RETURN = r"""
+output_file_path:
+  description: Path to the generated Ignition file if output was specified.
+  type: str
+  returned: when output is defined
+command_output:
+  description: Butane command output if no output file was specified.
+  type: str
+  returned: when output is not defined
+"""
+
+
 def main():
 	module = AnsibleModule(
 		argument_spec={
