@@ -25,7 +25,7 @@ jobs:
       - uses: jdx/mise-action@v2.2.1
 
       - name: Ruff
-        run: ruff format --check
+        run: ./venv/bin/ruff format --check
 
   linters:
     name: linters
@@ -48,7 +48,7 @@ jobs:
         run: typos
 
       - name: Ansible-lint
-        run: ansible-lint
+        run: ./venv/bin/ansible-lint
 
       - name: Ruff
-        run: ruff check
+        run: ./venv/bin/ruff check
