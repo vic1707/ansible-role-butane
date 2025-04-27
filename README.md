@@ -10,7 +10,10 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 
 ## Requirements
 
--   Ansible 2.9+ (tested up to 11.5.0)
+-   Ansible 9.13.0+ (tested up to 11.5.0)
+
+    _⚠️ Note:_ While this role officially targets Ansible 9.13.0+, it has been tested to work starting from Ansible 6.0.
+    Older versions are unsupported and may fail depending on your environment.
 -   `butane` CLI installed on the target system (or available at a specified path)
 
 ---
