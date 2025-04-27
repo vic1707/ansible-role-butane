@@ -1,0 +1,13 @@
+namespace: vic1707
+name: butane
+version: 0.0.1
+readme: README.md
+authors:
+  - vic1707
+description: An Ansible role to easily run the Butane CLI tool from CoreOS' Ignition suite.
+repository: https://github.com/vic1707/ansible-role-butane
+
+license:
+  - WTFPL
+license_file: LICENSE
+tags: [coreos, ignition, butane, provisioning, cloud]
