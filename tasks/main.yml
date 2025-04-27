@@ -2,7 +2,7 @@
 - name: Run butane
   butane:
     input_path: "{{ input_path }}"
-    input_raw: "{{ input_raw }}"
+    input: "{{ input }}"
     bin: "{{ bin }}"
     check: "{{ check }}"
     files_dir: "{{ files_dir }}"
