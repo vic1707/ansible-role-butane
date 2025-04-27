@@ -1,0 +1,12 @@
+---
+- name: Run butane
+  butane:
+    input_path: {{ input_path }}
+    input_raw: {{ input_raw }}
+    bin: {{ bin }}
+    check: {{ check }}
+    files_dir: {{ files_dir }}
+    output: {{ output }}
+    pretty: {{ pretty }}
+    raw: {{ raw }}
+    strict: {{ strict }}
