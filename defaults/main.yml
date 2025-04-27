@@ -1,0 +1,23 @@
+# ❯ butane --help # for v0.23.0
+# Usage: butane [options] [input-file]
+# Options:
+#   -c, --check              check config without producing output
+#   -d, --files-dir string   allow embedding local files from this directory
+#   -h, --help               show usage and exit
+#   -o, --output string      write to output file instead of stdout
+#   -p, --pretty             output formatted json
+#   -r, --raw                never wrap in a MachineConfig; force Ignition output
+#   -s, --strict             fail on any warning
+#   -V, --version            print the version and exit
+######
+# Note: [input-file] can be replaced by stdin
+---
+input_path: null # File path to butane file. Incompatible with <input_raw>.
+input_raw: null # Inline raw butane file. Incompatible with <input_path>.
+bin: "butane" # Assuming `butane` is in `$PATH`
+check: false # Default to running the butane conversion
+files_dir: null # Default to butane's file path, None if using stdin
+output: null # Default to stdout
+pretty: true
+raw: false # If true, ignores the `metadata` key. See: <https://coreos.github.io/butane/upgrading-openshift/#machineconfig-metadata-fields>
+strict: true
