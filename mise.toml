@@ -6,16 +6,14 @@ ANSIBLE_HOME = "{{ config_root }}/.ansible"
 postinstall = "pip install -r {{ config_root }}/requirements.txt"
 
 [tools]
-actionlint = "1.7.7"
-butane = "0.23.0"
-python = "3.13.3"
-typos-cli = "1.31.1"
-zizmor = "1.5.2"
+actionlint = "1.7.12"
+"github:coreos/ignition" = { version = "2.28.0", matching = "butane" }
+python = "3.12.13"
+typos = "1.50.3"
+zizmor = "1.30.1"
 
-[alias]
-butane = "asdf:Okeanos/asdf-butane"
-typos-cli = "asdf:vic1707/asdf-any-cargo-quickinstall"
-zizmor = "asdf:vic1707/asdf-any-cargo-quickinstall"
+[tool_alias]
+zizmor = "asdf:vic1707/asdf-zizmor"
 
 [settings]
 experimental = true ## Enables hooks
