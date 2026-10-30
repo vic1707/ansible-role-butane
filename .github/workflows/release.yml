@@ -1,0 +1,38 @@
+name: Publish role
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: galaxy-publish
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    uses: ./.github/workflows/Lint.yml # zizmor: ignore[self-repository] -- actionlint 1.7.12 requires this syntax
+  publish:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with:
+          cache: false
+      - name: Verify the release
+        run: git merge-base --is-ancestor HEAD origin/main
+      - name: Import the tagged role into Ansible Galaxy
+        env:
+          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          test -n "$GALAXY_API_KEY"
+          mise exec -- ansible-galaxy role import "${REPOSITORY%/*}" "${REPOSITORY#*/}" \
+            --role-name butane --branch "$RELEASE_TAG" --token "$GALAXY_API_KEY"

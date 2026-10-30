@@ -1,8 +1,8 @@
 # Ansible Role: vic1707.butane
 
-[![Ansible Galaxy](https://img.shields.io/badge/galaxy-vic1707.butane-blue.svg)](https://galaxy.ansible.com/vic1707/butane)
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-vic1707.butane-blue.svg)](https://galaxy.ansible.com/ui/standalone/roles/vic1707/butane/)
 
-An Ansible role to easily run the [Butane](https://coreos.github.io/butane/) CLI tool from CoreOS' Ignition suite.
+An Ansible role to easily run the [Butane](https://coreos.github.io/butane/) CLI tool from [CoreOS' Ignition suite](https://github.com/coreos/ignition).
 
 This role wraps the `butane` CLI to convert Butane configs into Ignition configs, either from a file or raw input.
 
@@ -10,7 +10,7 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 
 ## Requirements
 
-- Ansible 9.13.0+ (tested up to 11.5.0)
+- ansible-core 2.16+ (the core version shipped in Ansible 9; CI uses Ansible 9.13.0)
 
   _⚠️ Note:_ While this role officially targets Ansible 9.13.0+, it has been tested to work starting from Ansible 6.0.
   Older versions are unsupported and may fail depending on your environment.
@@ -66,10 +66,10 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
             variant: fcos
             version: 1.4.0
             storage:
-            files:
-              - path: /etc/example
-              contents:
-                inline: Hello World
+              files:
+                - path: /etc/example
+                  contents:
+                    inline: Hello World
 ```
 
 ---
@@ -77,3 +77,16 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 ## License
 
 [WTFPL](./LICENSE)
+
+## Publishing
+
+Set the repository secret `GALAXY_API_KEY` to your Galaxy API token. Update
+`CHANGELOG.md`, merge to `main`, then tag that commit and push:
+
+```sh
+git tag -a v0.0.4 -m "Release 0.0.4"
+git push origin v0.0.4
+```
+
+CI runs lint and the Butane smoke test, then imports the tagged role as
+`vic1707.butane`. Role versions come from Git tags; no GitHub Release is required.
