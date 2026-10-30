@@ -1,8 +1,9 @@
 galaxy_info:
+  namespace: vic1707
   role_name: butane
   author: vic1707
   description: An Ansible role to wrap butane CLI from CoreOS Ignition suite.
   license: WTFPL
-  min_ansible_version: "9.13.0" # tested 6.7.0 and was working see note in Readme
+  min_ansible_version: "2.16"
   galaxy_tags: [coreos, ignition, butane, provisioning, cloud]
 dependencies: []
