@@ -19,40 +19,46 @@ jobs:
     name: formatters
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: jdx/mise-action@v2.2.1
-      - name: Activate virtual environment
-        run: echo PATH="${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> "$GITHUB_ENV"
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
 
       - name: Ruff
-        run: ruff format --check
+        run: mise exec -- ruff format --check
 
   linters:
     name: linters
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: jdx/mise-action@v2.2.1
-      - name: Activate virtual environment
-        run: echo PATH="${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> "$GITHUB_ENV"
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
 
       - name: Zizmor
-        run: zizmor .
+        run: mise exec -- zizmor .
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Actionlint
-        run: actionlint
+        run: mise exec -- actionlint
 
       - name: Typos
-        run: typos
+        run: mise exec -- typos
 
       - name: Ansible-lint
-        run: ansible-lint
+        run: mise exec -- ansible-lint
 
       - name: Ruff
-        run: ruff check
+        run: mise exec -- ruff check
+
+  smoke-test:
+    name: role smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+      - run: mise exec -- ansible-playbook -i localhost, -c local tests/smoke.yml

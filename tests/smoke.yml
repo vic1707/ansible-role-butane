@@ -1,0 +1,35 @@
+---
+- name: Verify the role generates Ignition
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create an output directory
+      ansible.builtin.tempfile:
+        state: directory
+      register: butane_test_dir
+
+    - name: Exercise the role
+      block:
+        - name: Convert inline Butane to a file
+          ansible.builtin.include_role:
+            name: "{{ playbook_dir }}/.." # noqa: role-name[path] -- exercise this checkout
+          vars:
+            input: |
+              variant: fcos
+              version: 1.4.0
+            output: "{{ butane_test_dir.path }}/config.ign"
+
+        - name: Read the generated file
+          ansible.builtin.slurp:
+            src: "{{ butane_test_dir.path }}/config.ign"
+          register: butane_test_output
+
+        - name: Check the Ignition version
+          ansible.builtin.assert:
+            that:
+              - (butane_test_output.content | b64decode | from_json).ignition.version == '3.3.0'
+      always:
+        - name: Remove the output directory
+          ansible.builtin.file:
+            path: "{{ butane_test_dir.path }}"
+            state: absent
