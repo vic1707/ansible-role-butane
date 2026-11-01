@@ -93,11 +93,11 @@ git push origin v0.0.4
 CI runs lint and the Butane smoke test, then imports the tagged role as
 `vic1707.butane`. Role versions come from Git tags; no GitHub Release is required.
 
-Prereleases such as `v0.0.4-experimental.1` are supported. Pin role versions:
+Prereleases such as `v0.0.5-experimental.1` are supported. Pin role versions:
 standalone-role installs do not reliably exclude prereleases by default.
 
 ```sh
-ansible-galaxy role install vic1707.butane,v0.0.4-experimental.1
+ansible-galaxy role install vic1707.butane,v0.0.5-experimental.1
 ```
 
 For the [experimental Butane fork](https://github.com/vic1707/ignition/releases/tag/v0.1.0-experimental.1),
