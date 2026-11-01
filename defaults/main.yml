@@ -21,3 +21,5 @@ output: null # Default to stdout
 pretty: true
 raw: false # If true, ignores the `metadata` key. See: <https://coreos.github.io/butane/upgrading-openshift/#machineconfig-metadata-fields>
 strict: true
+file_processor: null # Optional executable; requires experimental Butane.
+file_processor_allowed_ext: null # Suffix list, e.g. [bu, tmpl, stdin].

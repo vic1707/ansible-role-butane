@@ -63,3 +63,5 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       - run: mise exec -- ansible-playbook -i localhost, -c local tests/smoke.yml
+      - name: Test the experimental Butane fork
+        run: mise x 'github:vic1707/ignition[matching=butane,prerelease=true]@0.1.0-experimental.1' -- ansible-playbook -i localhost, -c local tests/processor.yml

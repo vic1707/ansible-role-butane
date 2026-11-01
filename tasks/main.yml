@@ -10,3 +10,5 @@
     pretty: "{{ pretty }}"
     raw: "{{ raw }}"
     strict: "{{ strict }}"
+    file_processor: "{{ file_processor }}"
+    file_processor_allowed_ext: "{{ file_processor_allowed_ext }}"

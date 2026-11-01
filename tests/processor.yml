@@ -1,0 +1,51 @@
+---
+- name: Verify experimental file processing
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create a test directory
+      ansible.builtin.tempfile:
+        state: directory
+      register: butane_test_dir
+
+    - name: Exercise the experimental processor
+      block:
+        - name: Create a processor executable
+          ansible.builtin.copy:
+            dest: "{{ butane_test_dir.path }}/processor"
+            mode: "0755"
+            content: |
+              #!/bin/sh
+              sed 's/node-placeholder/node-processed/g'
+
+        - name: Process inline input through the role
+          ansible.builtin.include_role:
+            name: "{{ playbook_dir }}/.." # noqa: role-name[path] -- exercise this checkout
+          vars:
+            file_processor: "{{ butane_test_dir.path }}/processor"
+            file_processor_allowed_ext: [stdin]
+            input: |
+              variant: fcos
+              version: 1.7.0
+              storage:
+                files:
+                  - path: /etc/hostname
+                    contents:
+                      inline: node-placeholder
+            output: "{{ butane_test_dir.path }}/config.ign"
+
+        - name: Read the output
+          ansible.builtin.slurp:
+            src: "{{ butane_test_dir.path }}/config.ign"
+          register: butane_test_output
+
+        - name: Check processor output was embedded
+          ansible.builtin.assert:
+            that:
+              - "'node-processed' in (butane_test_output.content | b64decode)"
+              - "'node-placeholder' not in (butane_test_output.content | b64decode)"
+      always:
+        - name: Remove the test directory
+          ansible.builtin.file:
+            path: "{{ butane_test_dir.path }}"
+            state: absent

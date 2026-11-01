@@ -52,6 +52,16 @@ options:
       - Fail on warnings.
     type: bool
     default: true
+  file_processor:
+    description:
+      - External processor executable, such as gomplate. Requires experimental Butane.
+    type: str
+  file_processor_allowed_ext:
+    description:
+      - Filename suffixes to process. Use stdin to process inline input.
+      - Requires file_processor. An empty list disables processing.
+    type: list
+    elements: str
 author:
   - vic1707
 """
@@ -134,6 +144,8 @@ def main():
 				"default": True,
 				"required": False,
 			},
+			"file_processor": {"type": "str"},
+			"file_processor_allowed_ext": {"type": "list", "elements": "str"},
 		},
 		# Done manually, receiving null strill triggers the error
 		# mutually_exclusive=[
@@ -142,6 +154,7 @@ def main():
 		required_one_of=[
 			["input_path", "input"],
 		],
+		required_by={"file_processor_allowed_ext": ["file_processor"]},
 		supports_check_mode=False,
 	)
 
@@ -170,6 +183,15 @@ def main():
 		cmd.append("--raw")
 	if module.params["strict"]:
 		cmd.append("--strict")
+	if module.params["file_processor"] is not None:
+		cmd.extend(["--file-processor", module.params["file_processor"]])
+	if module.params["file_processor_allowed_ext"] is not None:
+		cmd.extend(
+			[
+				"--file-processor-allowed-ext",
+				",".join(module.params["file_processor_allowed_ext"]),
+			]
+		)
 
 	## butane input file logic
 	if module.params["input"]:  ## pass raw string via stdin
