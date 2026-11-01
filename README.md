@@ -32,6 +32,8 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 | `pretty`     | `true`   | Format output as pretty JSON.                                                                                                         |
 | `raw`        | `false`  | If true, ignores the `metadata` key. See: [https://coreos.github.io/butane/upgrading-openshift/#machineconfig-metadata-fields](docs). |
 | `strict`     | `true`   | Fail on warnings during conversion.                                                                                                   |
+| `file_processor` | `null` | Optional processor executable, such as `gomplate`. Requires the experimental Butane fork. |
+| `file_processor_allowed_ext` | `null` | List of suffixes to process, such as `[bu, tmpl, stdin]`. Requires `file_processor`. |
 
 ---
 
@@ -81,7 +83,7 @@ This role wraps the `butane` CLI to convert Butane configs into Ignition configs
 ## Publishing
 
 Set the repository secret `GALAXY_API_KEY` to your Galaxy API token. Update
-`CHANGELOG.md`, merge to `main`, then tag that commit and push:
+`CHANGELOG.md`, then tag the commit to publish and push:
 
 ```sh
 git tag -a v0.0.4 -m "Release 0.0.4"
@@ -90,3 +92,16 @@ git push origin v0.0.4
 
 CI runs lint and the Butane smoke test, then imports the tagged role as
 `vic1707.butane`. Role versions come from Git tags; no GitHub Release is required.
+
+Prereleases such as `v0.0.4-experimental.1` are supported. Pin role versions:
+standalone-role installs do not reliably exclude prereleases by default.
+
+```sh
+ansible-galaxy role install vic1707.butane,v0.0.4-experimental.1
+```
+
+For the [experimental Butane fork](https://github.com/vic1707/ignition/releases/tag/v0.1.0-experimental.1),
+set `bin` to its installed executable, `file_processor: gomplate`, and
+`file_processor_allowed_ext: [bu, tmpl, stdin]`. The fork binary and gomplate must
+be installed on the host executing the role. These options are omitted by default
+so the upstream Butane binary continues to work.
